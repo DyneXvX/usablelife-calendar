@@ -2,8 +2,15 @@ using UsableLifeCalendar.Api.Models;
 
 namespace UsableLifeCalendar.Api.Data
 {
+    /// <summary>
+    /// Fills a new database with starting data to test and demo with.
+    /// </summary>
     public static class DbSeeder
     {
+        /// <summary>
+        /// Adds the starting users and events, if the database is empty.
+        /// </summary>
+        /// <param name="context">The database to seed.</param>
         public static void Seed(ApplicationDbContext context)
         {
             // If there are already users in the database, assume it's already been

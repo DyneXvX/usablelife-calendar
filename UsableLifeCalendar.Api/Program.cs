@@ -7,12 +7,9 @@ using UsableLifeCalendar.Api.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -26,9 +23,7 @@ builder.Services.AddCors(options =>
     });
 });
 
-// This tells the app how to check whether a token someone sends in is real and
-// hasn't expired - using the same Jwt:Key/Issuer/Audience settings we used to
-// create tokens in TokenService.
+//Sets up the JWT authentication.
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -46,8 +41,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 var app = builder.Build();
 
-// Create/update the database automatically, then seed it, so anyone who clones this
-// project can just run it with no manual setup steps.
+// Create/update the database automatically then will seed it.
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
