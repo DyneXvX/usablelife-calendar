@@ -491,3 +491,8 @@ dist/
 
 # AI Reference Folder
 /AI Reference
+
+# SQLite database file (auto-created and seeded when the app runs, not source)
+*.db
+*.db-shm
+*.db-wal
