@@ -44,7 +44,7 @@ namespace UsableLifeCalendar.Api.Controllers
                 int.Parse(_config["Jwt:ExpiryMinutes"]!)
             );
 
-            return Ok(new LoginResponse { Token = token });
+            return Ok(new LoginResponse { Token = token, IsApprover = user.IsApprover });
         }
     }
 }

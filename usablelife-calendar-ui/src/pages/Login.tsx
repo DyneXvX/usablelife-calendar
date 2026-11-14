@@ -1,15 +1,33 @@
 import { useState, type SubmitEvent } from "react";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
     const [logonName, setLogonName] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
+    const { login } = useAuth();
 
-    function handleSubmit(e: SubmitEvent) {
+    async function handleSubmit(e: SubmitEvent) {
         e.preventDefault();
-        console.log('Logon name:', logonName);
-        console.log('Password:', password);
-    }
 
+        const response = await fetch('https://localhost:7181/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ logonName, password }),
+        });
+
+        if (!response.ok) {
+            setError('Logon name or password is incorrect.');
+            return;
+        }
+
+        const data = await response.json()
+        login(data.token, data.isApprover);
+        navigate('/calendar');
+
+    }
     return (
         <form onSubmit={handleSubmit}>
             <div>
@@ -27,6 +45,7 @@ function Login() {
                     onChange={(e) => setPassword(e.target.value)}>
                 </input>
             </div>
+            <p>{error}</p>
             <button type="submit">Log In</button>
         </form>
     );
