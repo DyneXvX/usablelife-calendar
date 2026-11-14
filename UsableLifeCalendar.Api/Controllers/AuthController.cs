@@ -11,10 +11,12 @@ namespace UsableLifeCalendar.Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _config;
 
-        public AuthController(ApplicationDbContext context)
+        public AuthController(ApplicationDbContext context, IConfiguration config)
         {
             _context = context;
+            _config = config;
         }
 
         [HttpPost("login")]
@@ -34,9 +36,15 @@ namespace UsableLifeCalendar.Api.Controllers
                 return Unauthorized("Logon name or password is incorrect.");
             }
 
-            // This just proves the check works for now. The real JWT token gets
-            // added here in the next task.
-            return Ok("Login successful for " + user.LogonName);
+            var token = TokenService.GenerateToken(
+                user,
+                _config["Jwt:Key"]!,
+                _config["Jwt:Issuer"]!,
+                _config["Jwt:Audience"]!,
+                int.Parse(_config["Jwt:ExpiryMinutes"]!)
+            );
+
+            return Ok(new LoginResponse { Token = token });
         }
     }
 }
