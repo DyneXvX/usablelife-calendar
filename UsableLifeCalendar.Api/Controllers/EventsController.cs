@@ -16,14 +16,17 @@ namespace UsableLifeCalendar.Api.Controllers
     public class EventsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _config;
 
         /// <summary>
-        /// Creates the controller with the database it needs.
+        /// Creates the controller with the database and app settings it needs.
         /// </summary>
         /// <param name="context">The database connection.</param>
-        public EventsController(ApplicationDbContext context)
+        /// <param name="config">The app settings (used to read the max-events-per-day rule).</param>
+        public EventsController(ApplicationDbContext context, IConfiguration config)
         {
             _context = context;
+            _config = config;
         }
 
         /// <summary>
@@ -44,6 +47,45 @@ namespace UsableLifeCalendar.Api.Controllers
         {
             string isApproverText = User.FindFirst("IsApprover")!.Value;
             return isApproverText == "True";
+        }
+
+        /// <summary>
+        /// Builds the version of an event sent back to the client, with the creator's name
+        /// looked up instead of just their id.
+        /// </summary>
+        /// <param name="e">The event from the database.</param>
+        /// <returns>The event details, including the creator's name.</returns>
+        private EventResponse ToEventResponse(Event e)
+        {
+            User? creator = _context.Users.FirstOrDefault(u => u.UserId == e.CreatedByUserId);
+
+            EventResponse response = new()
+            {
+                EventId = e.EventId,
+                Title = e.Title,
+                Description = e.Description,
+                Location = e.Location,
+                EventDate = e.EventDate,
+                EventTime = e.EventTime,
+                CreatedByUserId = e.CreatedByUserId,
+                CreatedByFirstName = creator?.FirstName ?? string.Empty,
+                CreatedByMiddleName = creator?.MiddleName,
+                CreatedByLastName = creator?.LastName ?? string.Empty,
+                ApproverUserId = e.ApproverUserId,
+                CreatedAt = e.CreatedAt,
+                ApprovedAt = e.ApprovedAt
+            };
+
+            return response;
+        }
+
+        /// <summary>
+        /// Reads the maximum number of approved events allowed on a single day from the app settings.
+        /// </summary>
+        /// <returns>The configured maximum.</returns>
+        private int MaxApprovedPerDay()
+        {
+            return int.Parse(_config["EventRules:MaxApprovedPerDay"]!);
         }
 
         /// <summary>
@@ -101,7 +143,14 @@ namespace UsableLifeCalendar.Api.Controllers
 
             matchingEvents.Sort((a, b) => a.EventDate.CompareTo(b.EventDate));
 
-            return Ok(matchingEvents);
+            List<EventResponse> response = [];
+
+            foreach (Event e in matchingEvents)
+            {
+                response.Add(ToEventResponse(e));
+            }
+
+            return Ok(response);
         }
 
         /// <summary>
@@ -141,9 +190,9 @@ namespace UsableLifeCalendar.Api.Controllers
         {
             bool isApprover = IsApprover();
 
-            if (isApprover && ApprovedCountForDay(request.EventDate) >= 10)
+            if (isApprover && ApprovedCountForDay(request.EventDate) >= MaxApprovedPerDay())
             {
-                return BadRequest("This day already has the maximum of 10 approved events.");
+                return BadRequest($"This day already has the maximum of {MaxApprovedPerDay()} approved events.");
             }
 
             Event newEvent = new()
@@ -189,9 +238,9 @@ namespace UsableLifeCalendar.Api.Controllers
                 return NotFound();
             }
 
-            if (ApprovedCountForDay(eventToApprove.EventDate) >= 10)
+            if (ApprovedCountForDay(eventToApprove.EventDate) >= MaxApprovedPerDay())
             {
-                return BadRequest("This day already has the maximum of 10 approved events.");
+                return BadRequest($"This day already has the maximum of {MaxApprovedPerDay()} approved events.");
             }
 
             eventToApprove.ApproverUserId = CurrentUserId();

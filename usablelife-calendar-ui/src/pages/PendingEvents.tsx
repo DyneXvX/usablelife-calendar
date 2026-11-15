@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { apiFetch } from '../api/api';
+import { API_BASE_URL } from '../api/config';
 import { formatDate } from '../utils/formatDate';
 import { formatTime } from '../utils/formatTime';
 import type { CalendarEvent } from '../interfaces/Event';
@@ -15,7 +16,7 @@ function PendingEvents() {
     const [error, setError] = useState('');
 
     async function loadPendingEvents() {
-        const response = await apiFetch('https://localhost:7181/api/events/pending', token);
+        const response = await apiFetch(`${API_BASE_URL}/api/events/pending`, token);
 
         if (!response.ok) {
             setError('Could not load pending events.');
@@ -31,14 +32,14 @@ function PendingEvents() {
     }, []);
 
     async function handleApprove(id: number) {
-        await apiFetch(`https://localhost:7181/api/events/${id}/approve`, token, {
+        await apiFetch(`${API_BASE_URL}/api/events/${id}/approve`, token, {
             method: 'POST',
         });
         loadPendingEvents();
     }
 
     async function handleDelete(id: number) {
-        await apiFetch(`https://localhost:7181/api/events/${id}`, token, {
+        await apiFetch(`${API_BASE_URL}/api/events/${id}`, token, {
             method: 'DELETE',
         });
         loadPendingEvents();

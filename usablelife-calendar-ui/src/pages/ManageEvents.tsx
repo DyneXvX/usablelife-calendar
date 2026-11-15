@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import type { SubmitEvent as ReactSubmitEvent } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { apiFetch } from '../api/api';
+import { API_BASE_URL } from '../api/config';
 import { formatDate } from '../utils/formatDate';
 import { formatTime } from '../utils/formatTime';
 
@@ -30,7 +31,7 @@ function ManageEvents() {
     const [eventTime, setEventTime] = useState('');
 
     async function loadEvents() {
-        const response = await apiFetch('https://localhost:7181/api/events', token);
+        const response = await apiFetch(`${API_BASE_URL}/api/events`, token);
 
         if (!response.ok) {
             setError('Could not load events.');
@@ -62,7 +63,7 @@ function ManageEvents() {
             return;
         }
 
-        const response = await apiFetch(`https://localhost:7181/api/events/${editingId}`, token, {
+        const response = await apiFetch(`${API_BASE_URL}/api/events/${editingId}`, token, {
             method: 'PUT',
             body: JSON.stringify({
                 title,
@@ -90,7 +91,7 @@ function ManageEvents() {
             return;
         }
 
-        await apiFetch(`https://localhost:7181/api/events/${id}`, token, {
+        await apiFetch(`${API_BASE_URL}/api/events/${id}`, token, {
             method: 'DELETE',
         });
         loadEvents();

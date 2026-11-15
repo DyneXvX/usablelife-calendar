@@ -1,6 +1,7 @@
 import { useState, type SubmitEvent } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../api/config";
 
 function Login() {
     const [logonName, setLogonName] = useState('');
@@ -12,7 +13,7 @@ function Login() {
     async function handleSubmit(e: SubmitEvent) {
         e.preventDefault();
 
-        const response = await fetch('https://localhost:7181/api/auth/login', {
+        const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ logonName, password }),

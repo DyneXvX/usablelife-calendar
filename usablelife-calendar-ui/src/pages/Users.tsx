@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import type { SubmitEvent as ReactSubmitEvent } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { apiFetch } from '../api/api';
+import { API_BASE_URL } from '../api/config';
 import { formatName } from '../utils/formatName';
 
 interface UserRecord {
@@ -30,7 +31,7 @@ function Users() {
     const [isApprover, setIsApprover] = useState(false);
 
     async function loadUsers() {
-        const response = await apiFetch('https://localhost:7181/api/users', token);
+        const response = await apiFetch(`${API_BASE_URL}/api/users`, token);
 
         if (!response.ok) {
             setError('Could not load users.');
@@ -69,7 +70,7 @@ function Users() {
         setError('');
 
         if (editingId === 0) {
-            const response = await apiFetch('https://localhost:7181/api/users', token, {
+            const response = await apiFetch(`${API_BASE_URL}/api/users`, token, {
                 method: 'POST',
                 body: JSON.stringify({ firstName, middleName, lastName, logonName, password, isApprover }),
             });
@@ -80,7 +81,7 @@ function Users() {
                 return;
             }
         } else if (editingId !== null) {
-            const response = await apiFetch(`https://localhost:7181/api/users/${editingId}`, token, {
+            const response = await apiFetch(`${API_BASE_URL}/api/users/${editingId}`, token, {
                 method: 'PUT',
                 body: JSON.stringify({ firstName, middleName, lastName, logonName, isApprover }),
             });
@@ -103,7 +104,7 @@ function Users() {
             return;
         }
 
-        await apiFetch(`https://localhost:7181/api/users/${id}`, token, {
+        await apiFetch(`${API_BASE_URL}/api/users/${id}`, token, {
             method: 'DELETE',
         });
         loadUsers();

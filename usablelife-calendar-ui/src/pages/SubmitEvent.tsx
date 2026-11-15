@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { SubmitEvent as ReactSubmitEvent } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { apiFetch } from '../api/api';
+import { API_BASE_URL } from '../api/config';
 
 /**
  * Form for submitting a new event. Normal users get it saved as pending;
@@ -23,7 +24,7 @@ function SubmitEvent() {
         setError('');
         setSuccess('');
 
-        const response = await apiFetch('https://localhost:7181/api/events', token, {
+        const response = await apiFetch(`${API_BASE_URL}/api/events`, token, {
             method: 'POST',
             body: JSON.stringify({
                 title,

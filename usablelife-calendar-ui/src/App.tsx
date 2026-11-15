@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import Login from './pages/Login'
 import Calendar from './pages/Calendar'
 import SubmitEvent from './pages/SubmitEvent'
@@ -11,6 +11,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 function App() {
   return (
     <Routes>
+      <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<Login />} />
       <Route element={<Layout />}>
         <Route path="/calendar" element={<ProtectedRoute><Calendar /></ProtectedRoute>} />
@@ -19,6 +20,7 @@ function App() {
         <Route path="/users" element={<ProtectedRoute approverOnly><Users /></ProtectedRoute>} />
         <Route path="/manage-events" element={<ProtectedRoute approverOnly><ManageEvents /></ProtectedRoute>} />
       </Route>
+      <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   )
 }
