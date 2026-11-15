@@ -105,8 +105,8 @@ dotnet test UsableLifeCalendar.Api.Tests
 ## Development Log
 
 The [`Development Log`](./Development%20Log/) folder breaks down every user story for this
-project. Each one lists the tasks involved, the estimated hours, and the actual hours. It was
-created by, and is monitored with, Claude Code.
+project. Each one lists the tasks involved and the estimated hours. It was created by, and is
+monitored with, Claude Code.
 
 ## Authors
 

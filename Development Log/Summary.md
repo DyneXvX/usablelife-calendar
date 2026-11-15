@@ -1,19 +1,16 @@
 # Development Log — Summary
 
 This folder is a factual record of how this project was built: each file covers one user
-story from the original plan, listing the story itself, the tasks under it, how long each
-task was estimated to take, and how long it actually took.
+story from the original plan, listing the story itself, the tasks under it, and how long each
+task was estimated to take.
 
 **Format:** each story is written as "As a [user], I want [thing], so that [reason]" — the
 story explains the goal and does not get its own hour estimate. Under each story is an
-ordered list of tasks, each with an **Est.** (estimated before starting) and an **Actual**
-(filled in once done).
+ordered list of tasks, each with an **Est.** (estimated before starting).
 
 A few tasks across Stories 4-11 (backend CRUD endpoints for events and users) were written
 together in a single batch rather than one at a time, since the full API surface was already
-known. Where that happened, the individual task rows note that their actual time is counted
-as part of that shared total rather than tracked separately — that's a real, honest
-limitation of the data, not a gap.
+known.
 
 ## Totals
 
