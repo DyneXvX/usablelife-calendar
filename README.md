@@ -13,7 +13,7 @@ new events, and (for approvers) review, approve, edit, and delete events and use
 
 **Built with:**
 - Backend: ASP.NET Core Web API (.NET 10), Entity Framework Core, SQLite
-- Frontend: React 18 with TypeScript, Vite
+- Frontend: React 19 with TypeScript, Vite
 - Authentication: JWT, with passwords hashed using BCrypt
 
 ## Getting Started
@@ -21,9 +21,10 @@ new events, and (for approvers) review, approve, edit, and delete events and use
 ### Dependencies
 
 - .NET 10 SDK or later
-- Node.js 20 or later, with npm
-- Visual Studio 2022/2026 or another editor capable of opening a `.slnx` solution (optional —
-  the backend can also be run entirely from the command line)
+- Node.js 20.19 or later (or 22.12 or later), with npm
+- Visual Studio 2022 version 17.13 or later (or Visual Studio 2026), or another editor capable
+  of opening a `.slnx` solution — optional, the backend can also be run entirely from the
+  command line
 
 ### Installing
 
@@ -36,14 +37,10 @@ cd usablelife-calendar
 
 2. Set up the backend's signing key. The backend signs login tokens with a secret key. This key
    is intentionally **not** stored in the repository — it's kept in .NET User Secrets, which
-   live outside the project folder on your own machine. From inside the `UsableLifeCalendar.Api`
-   folder, run:
+   live outside the project folder on your own machine. The project is already set up to use
+   User Secrets, so there's nothing to initialize — just set the key itself.
 
-```
-dotnet user-secrets init
-```
-
-   Then generate a random value to use as the key — for example, in PowerShell, from inside the
+   Generate a random value to use as the key — for example, in PowerShell, from inside the
    `UsableLifeCalendar.Api` folder:
 
 ```

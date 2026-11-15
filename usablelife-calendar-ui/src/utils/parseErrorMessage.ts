@@ -1,7 +1,8 @@
 /**
  * Reads an error response from the API and returns a readable message.
- * Handles both ASP.NET Core's automatic validation error JSON and our own
- * plain-text BadRequest messages.
+ * Handles both kinds of error the backend can send - the automatic one when
+ * a field is invalid, and the plain-text ones we write ourselves (like the
+ * 10-per-day limit message).
  * @param response The failed API response.
  * @returns A readable error message.
  */

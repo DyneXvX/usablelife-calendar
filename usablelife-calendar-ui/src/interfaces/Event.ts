@@ -1,4 +1,4 @@
-//customer interface for all Events
+//common interface for all Events
 export interface CalendarEvent {
     eventId: number;
     title: string;

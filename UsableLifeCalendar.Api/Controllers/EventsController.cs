@@ -166,7 +166,7 @@ namespace UsableLifeCalendar.Api.Controllers
         /// <summary>
         /// Gets all events waiting for approval. Approvers only.
         /// </summary>
-        /// <returns>The pending events, sorted by date.</returns>
+        /// <returns>The pending events, sorted by date and time.</returns>
         [HttpGet("pending")]
         public IActionResult GetPendingEvents()
         {
@@ -185,7 +185,17 @@ namespace UsableLifeCalendar.Api.Controllers
                 }
             }
 
-            pendingEvents.Sort((a, b) => a.EventDate.CompareTo(b.EventDate));
+            pendingEvents.Sort((a, b) =>
+            {
+                int dateCompare = a.EventDate.CompareTo(b.EventDate);
+
+                if (dateCompare != 0)
+                {
+                    return dateCompare;
+                }
+
+                return a.EventTime.CompareTo(b.EventTime);
+            });
 
             return Ok(pendingEvents);
         }
@@ -207,9 +217,9 @@ namespace UsableLifeCalendar.Api.Controllers
 
             Event newEvent = new()
             {
-                Title = request.Title,
-                Description = request.Description,
-                Location = request.Location,
+                Title = request.Title.Trim(),
+                Description = request.Description.Trim(),
+                Location = request.Location?.Trim(),
                 EventDate = request.EventDate,
                 EventTime = request.EventTime,
                 CreatedByUserId = CurrentUserId(),
@@ -282,9 +292,9 @@ namespace UsableLifeCalendar.Api.Controllers
                 return NotFound();
             }
 
-            eventToUpdate.Title = request.Title;
-            eventToUpdate.Description = request.Description;
-            eventToUpdate.Location = request.Location;
+            eventToUpdate.Title = request.Title.Trim();
+            eventToUpdate.Description = request.Description.Trim();
+            eventToUpdate.Location = request.Location?.Trim();
             eventToUpdate.EventDate = request.EventDate;
             eventToUpdate.EventTime = request.EventTime;
 

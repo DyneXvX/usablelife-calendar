@@ -8,7 +8,7 @@ using UsableLifeCalendar.Api.Services;
 namespace UsableLifeCalendar.Api.Controllers
 {
     /// <summary>
-    /// Handles managing user accounts. Approver's only.
+    /// Handles managing user accounts. Approvers only.
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
@@ -92,10 +92,10 @@ namespace UsableLifeCalendar.Api.Controllers
 
             User newUser = new User
             {
-                FirstName = request.FirstName,
-                MiddleName = request.MiddleName,
-                LastName = request.LastName,
-                LogonName = request.LogonName,
+                FirstName = request.FirstName.Trim(),
+                MiddleName = request.MiddleName?.Trim(),
+                LastName = request.LastName.Trim(),
+                LogonName = request.LogonName.Trim(),
                 PasswordHash = PasswordHasher.Hash(request.Password),
                 IsApprover = request.IsApprover
             };
@@ -127,10 +127,10 @@ namespace UsableLifeCalendar.Api.Controllers
                 return NotFound();
             }
 
-            user.FirstName = request.FirstName;
-            user.MiddleName = request.MiddleName;
-            user.LastName = request.LastName;
-            user.LogonName = request.LogonName;
+            user.FirstName = request.FirstName.Trim();
+            user.MiddleName = request.MiddleName?.Trim();
+            user.LastName = request.LastName.Trim();
+            user.LogonName = request.LogonName.Trim();
             user.IsApprover = request.IsApprover;
 
             _context.SaveChanges();
