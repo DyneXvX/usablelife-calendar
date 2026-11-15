@@ -13,9 +13,10 @@ interface DayViewProps {
     onPreviousDay: () => void;
     onNextDay: () => void;
     onMonthView: () => void;
+    onToday: () => void;
 }
 
-function DayView({ year, month, day, onPreviousDay, onNextDay, onMonthView }: DayViewProps) {
+function DayView({ year, month, day, onPreviousDay, onNextDay, onMonthView, onToday }: DayViewProps) {
     const { token } = useAuth();
     const [events, setEvents] = useState<CalendarEvent[]>([]);
     const [error, setError] = useState('');
@@ -45,6 +46,7 @@ function DayView({ year, month, day, onPreviousDay, onNextDay, onMonthView }: Da
             <h1>Day View</h1>
             <h2>{date.toLocaleDateString('en-US')}</h2>
             <button type="button" onClick={onPreviousDay}>Previous</button>
+            <button type="button" onClick={onToday}>Today</button>
             <button type="button" onClick={onMonthView}>Month View</button>
             <button type="button" onClick={onNextDay}>Next</button>
 

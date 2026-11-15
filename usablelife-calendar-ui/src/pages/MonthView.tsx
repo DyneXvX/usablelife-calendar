@@ -11,9 +11,10 @@ interface MonthViewProps {
     onPreviousMonth: () => void;
     onNextMonth: () => void;
     onDayClick: (day: number) => void;
+    onToday: () => void;
 }
 
-function MonthView({ year, month, onPreviousMonth, onNextMonth, onDayClick }: MonthViewProps) {
+function MonthView({ year, month, onPreviousMonth, onNextMonth, onDayClick, onToday }: MonthViewProps) {
     const { token } = useAuth();
     const [events, setEvents] = useState<CalendarEvent[]>([]);
     const [error, setError] = useState('')
@@ -72,6 +73,7 @@ function MonthView({ year, month, onPreviousMonth, onNextMonth, onDayClick }: Mo
             <h1>Month View</h1>
             <h2>{monthName} {year}</h2>
             <button type="button" onClick={onPreviousMonth}>Previous</button>
+            <button type="button" onClick={onToday}>Today</button>
             <button type="button" onClick={onNextMonth}>Next</button>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px' }}>
                 {weekdayNames.map((name) => (

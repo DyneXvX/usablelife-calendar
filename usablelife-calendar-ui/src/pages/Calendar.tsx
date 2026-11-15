@@ -52,6 +52,13 @@ function Calendar() {
         setView('month');
     }
 
+    function goToToday() {
+        const now = new Date();
+        setYear(now.getFullYear());
+        setMonth(now.getMonth() + 1);
+        setDay(now.getDate());
+    }
+
     if (view === 'month') {
         return (
             <MonthView
@@ -60,6 +67,7 @@ function Calendar() {
                 onPreviousMonth={goToPreviousMonth}
                 onNextMonth={goToNextMonth}
                 onDayClick={handleDayClick}
+                onToday={goToToday}
             />
         );
     }
@@ -72,6 +80,7 @@ function Calendar() {
             onPreviousDay={goToPreviousDay}
             onNextDay={goToNextDay}
             onMonthView={goToMonthView}
+            onToday={goToToday}
         />
     );
 }
