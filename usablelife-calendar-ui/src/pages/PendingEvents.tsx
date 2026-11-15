@@ -3,15 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { apiFetch } from '../api/api';
 import { formatDate } from '../utils/formatDate';
 import { formatTime } from '../utils/formatTime';
-
-interface PendingEvent {
-    eventId: number;
-    title: string;
-    description: string;
-    location: string | null;
-    eventDate: string;
-    eventTime: string;
-}
+import type { CalendarEvent } from '../interfaces/Event';
 
 /**
  * Approver-only page listing events waiting for approval, with Approve and
@@ -19,7 +11,7 @@ interface PendingEvent {
  */
 function PendingEvents() {
     const { token } = useAuth();
-    const [events, setEvents] = useState<PendingEvent[]>([]);
+    const [events, setEvents] = useState<CalendarEvent[]>([]);
     const [error, setError] = useState('');
 
     async function loadPendingEvents() {

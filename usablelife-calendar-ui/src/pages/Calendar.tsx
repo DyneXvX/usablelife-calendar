@@ -1,5 +1,9 @@
+import MonthView from "./MonthView";
+
 function Calendar() {
-    return <h1>Calendar Page</h1>;
+    return (
+        <MonthView></MonthView>
+    )
 }
 
 export default Calendar;
