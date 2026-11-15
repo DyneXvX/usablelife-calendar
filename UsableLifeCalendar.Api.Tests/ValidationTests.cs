@@ -16,6 +16,7 @@ namespace UsableLifeCalendar.Api.Tests
         [Fact]
         public void CreateUserRequest_WithValidData_PassesValidation()
         {
+            // Arrange
             CreateUserRequest request = new()
             {
                 FirstName = "Jane",
@@ -24,14 +25,17 @@ namespace UsableLifeCalendar.Api.Tests
                 Password = "Password1!"
             };
 
+            // Act
             List<ValidationResult> results = Validate(request);
 
+            // Assert
             Assert.Empty(results);
         }
 
         [Fact]
         public void CreateUserRequest_WithEmptyFirstName_FailsValidation()
         {
+            // Arrange
             CreateUserRequest request = new()
             {
                 FirstName = "",
@@ -40,14 +44,17 @@ namespace UsableLifeCalendar.Api.Tests
                 Password = "Password1!"
             };
 
+            // Act
             List<ValidationResult> results = Validate(request);
 
+            // Assert
             Assert.NotEmpty(results);
         }
 
         [Fact]
         public void CreateUserRequest_WithFirstNameTooLong_FailsValidation()
         {
+            // Arrange
             CreateUserRequest request = new()
             {
                 FirstName = new string('A', 26),
@@ -56,14 +63,17 @@ namespace UsableLifeCalendar.Api.Tests
                 Password = "Password1!"
             };
 
+            // Act
             List<ValidationResult> results = Validate(request);
 
+            // Assert
             Assert.NotEmpty(results);
         }
 
         [Fact]
         public void CreateUserRequest_WithLogonNameTooShort_FailsValidation()
         {
+            // Arrange
             CreateUserRequest request = new()
             {
                 FirstName = "Jane",
@@ -72,14 +82,17 @@ namespace UsableLifeCalendar.Api.Tests
                 Password = "Password1!"
             };
 
+            // Act
             List<ValidationResult> results = Validate(request);
 
+            // Assert
             Assert.NotEmpty(results);
         }
 
         [Fact]
         public void CreateUserRequest_WithLogonNameContainingSpecialCharacters_FailsValidation()
         {
+            // Arrange
             CreateUserRequest request = new()
             {
                 FirstName = "Jane",
@@ -88,14 +101,17 @@ namespace UsableLifeCalendar.Api.Tests
                 Password = "Password1!"
             };
 
+            // Act
             List<ValidationResult> results = Validate(request);
 
+            // Assert
             Assert.NotEmpty(results);
         }
 
         [Fact]
         public void CreateUserRequest_WithPasswordTooShort_FailsValidation()
         {
+            // Arrange
             CreateUserRequest request = new()
             {
                 FirstName = "Jane",
@@ -104,14 +120,17 @@ namespace UsableLifeCalendar.Api.Tests
                 Password = "abc"
             };
 
+            // Act
             List<ValidationResult> results = Validate(request);
 
+            // Assert
             Assert.NotEmpty(results);
         }
 
         [Fact]
         public void CreateUserRequest_WithNoMiddleName_PassesValidation()
         {
+            // Arrange
             CreateUserRequest request = new()
             {
                 FirstName = "Jane",
@@ -121,14 +140,17 @@ namespace UsableLifeCalendar.Api.Tests
                 MiddleName = null
             };
 
+            // Act
             List<ValidationResult> results = Validate(request);
 
+            // Assert
             Assert.Empty(results);
         }
 
         [Fact]
         public void CreateEventRequest_WithValidData_PassesValidation()
         {
+            // Arrange
             CreateEventRequest request = new()
             {
                 Title = "Fall Festival",
@@ -138,14 +160,17 @@ namespace UsableLifeCalendar.Api.Tests
                 EventTime = new TimeOnly(14, 0)
             };
 
+            // Act
             List<ValidationResult> results = Validate(request);
 
+            // Assert
             Assert.Empty(results);
         }
 
         [Fact]
         public void CreateEventRequest_WithEmptyTitle_FailsValidation()
         {
+            // Arrange
             CreateEventRequest request = new()
             {
                 Title = "",
@@ -154,14 +179,17 @@ namespace UsableLifeCalendar.Api.Tests
                 EventTime = new TimeOnly(14, 0)
             };
 
+            // Act
             List<ValidationResult> results = Validate(request);
 
+            // Assert
             Assert.NotEmpty(results);
         }
 
         [Fact]
         public void CreateEventRequest_WithNoLocation_PassesValidation()
         {
+            // Arrange
             CreateEventRequest request = new()
             {
                 Title = "Fall Festival",
@@ -171,8 +199,10 @@ namespace UsableLifeCalendar.Api.Tests
                 EventTime = new TimeOnly(14, 0)
             };
 
+            // Act
             List<ValidationResult> results = Validate(request);
 
+            // Assert
             Assert.Empty(results);
         }
     }
