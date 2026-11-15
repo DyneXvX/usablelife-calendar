@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="UsableLifeCalendar.Api.Tests/UsableLifeCalendar.Api.Tests.csproj" />
+  <Project Path="UsableLifeCalendar.Api/UsableLifeCalendar.Api.csproj" DefaultStartup="true" />
+</Solution>
