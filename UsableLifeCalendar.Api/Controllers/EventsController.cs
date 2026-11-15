@@ -114,7 +114,7 @@ namespace UsableLifeCalendar.Api.Controllers
         /// <param name="year">The year to filter by, for the month view.</param>
         /// <param name="month">The month to filter by, for the month view.</param>
         /// <param name="date">The exact date to filter by, for the day view.</param>
-        /// <returns>The matching approved events, sorted by date. If no filters are given, returns every approved event.</returns>
+        /// <returns>The matching approved events, sorted by date and time. If no filters are given, returns every approved event.</returns>
         [HttpGet]
         public IActionResult GetEvents([FromQuery] int? year, [FromQuery] int? month, [FromQuery] DateTime? date)
         {
@@ -141,7 +141,17 @@ namespace UsableLifeCalendar.Api.Controllers
                 }
             }
 
-            matchingEvents.Sort((a, b) => a.EventDate.CompareTo(b.EventDate));
+            matchingEvents.Sort((a, b) =>
+            {
+                int dateCompare = a.EventDate.CompareTo(b.EventDate);
+
+                if (dateCompare != 0)
+                {
+                    return dateCompare;
+                }
+
+                return a.EventTime.CompareTo(b.EventTime);
+            });
 
             List<EventResponse> response = [];
 

@@ -1,10 +1,13 @@
 import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import MonthView from './MonthView';
 import DayView from './DayView';
 
 function Calendar() {
     const today = new Date();
-    const [view, setView] = useState<'month' | 'day'>('month');
+    const location = useLocation();
+    const navigate = useNavigate();
+    const view: 'month' | 'day' = location.pathname.endsWith('/day') ? 'day' : 'month';
     const [year, setYear] = useState(today.getFullYear());
     const [month, setMonth] = useState(today.getMonth() + 1);
     const [day, setDay] = useState(today.getDate());
@@ -45,11 +48,11 @@ function Calendar() {
 
     function handleDayClick(clickedDay: number) {
         setDay(clickedDay);
-        setView('day');
+        navigate('/calendar/day');
     }
 
     function goToMonthView() {
-        setView('month');
+        navigate('/calendar');
     }
 
     function goToToday() {

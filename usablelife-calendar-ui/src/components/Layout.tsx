@@ -1,4 +1,4 @@
-import { Link, Outlet } from 'react-router-dom';
+import { NavLink, Outlet } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 /**
@@ -10,13 +10,14 @@ function Layout() {
 
     return (
         <div>
-            <nav>
-                <Link to="/calendar">Calendar</Link>
-                <Link to="/submit-event">Submit Event</Link>
-                {isApprover && <Link to="/pending-events">Pending Events</Link>}
-                {isApprover && <Link to="/users">Users</Link>}
-                {isApprover && <Link to="/manage-events">Manage Events</Link>}
-                <button type="button" onClick={logout}>Log Out</button>
+            <nav className="nav">
+                <span className="nav-title">School Event Calendar</span>
+                <NavLink to="/calendar">Calendar</NavLink>
+                <NavLink to="/submit-event">Submit Event</NavLink>
+                {isApprover && <NavLink to="/pending-events">Pending Events</NavLink>}
+                {isApprover && <NavLink to="/users">Users</NavLink>}
+                {isApprover && <NavLink to="/manage-events">Manage Events</NavLink>}
+                <button type="button" className="btn" onClick={logout}>Log Out</button>
             </nav>
             <Outlet />
         </div>

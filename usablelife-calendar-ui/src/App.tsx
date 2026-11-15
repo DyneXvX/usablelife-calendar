@@ -15,6 +15,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route element={<Layout />}>
         <Route path="/calendar" element={<ProtectedRoute><Calendar /></ProtectedRoute>} />
+        <Route path="/calendar/day" element={<ProtectedRoute><Calendar /></ProtectedRoute>} />
         <Route path="/submit-event" element={<ProtectedRoute><SubmitEvent /></ProtectedRoute>} />
         <Route path="/pending-events" element={<ProtectedRoute approverOnly><PendingEvents /></ProtectedRoute>} />
         <Route path="/users" element={<ProtectedRoute approverOnly><Users /></ProtectedRoute>} />

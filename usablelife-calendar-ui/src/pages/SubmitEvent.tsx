@@ -3,6 +3,7 @@ import type { SubmitEvent as ReactSubmitEvent } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { apiFetch } from '../api/api';
 import { API_BASE_URL } from '../api/config';
+import { parseErrorMessage } from '../utils/parseErrorMessage';
 
 /**
  * Form for submitting a new event. Normal users get it saved as pending;
@@ -36,7 +37,7 @@ function SubmitEvent() {
         });
 
         if (!response.ok) {
-            const message = await response.text();
+            const message = await parseErrorMessage(response);
             setError(message || 'Could not submit the event. Please check your entries.');
             return;
         }
@@ -50,32 +51,32 @@ function SubmitEvent() {
     }
 
     return (
-        <div>
+        <div className="page">
             <h1>Submit Event</h1>
             <form onSubmit={handleSubmit}>
-                <div>
+                <div className="field">
                     <label>Title</label>
                     <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
                 </div>
-                <div>
+                <div className="field">
                     <label>Description</label>
                     <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
                 </div>
-                <div>
+                <div className="field">
                     <label>Location</label>
                     <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} />
                 </div>
-                <div>
+                <div className="field">
                     <label>Date</label>
                     <input type="date" value={eventDate} onChange={(e) => setEventDate(e.target.value)} />
                 </div>
-                <div>
+                <div className="field">
                     <label>Time</label>
                     <input type="time" value={eventTime} onChange={(e) => setEventTime(e.target.value)} />
                 </div>
-                {error && <p>{error}</p>}
-                {success && <p>{success}</p>}
-                <button type="submit">Submit</button>
+                {error && <p className="error">{error}</p>}
+                {success && <p className="success">{success}</p>}
+                <button type="submit" className="btn btn-primary">Submit</button>
             </form>
         </div>
     );

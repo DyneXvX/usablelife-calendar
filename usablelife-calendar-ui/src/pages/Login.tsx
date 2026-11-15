@@ -30,25 +30,29 @@ function Login() {
 
     }
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <h1>Login Page</h1>
-                <input
-                    type="text"
-                    value={logonName}
-                    onChange={(e) => setLogonName(e.target.value)}>
-                </input>
-            </div>
-            <div>
-                <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}>
-                </input>
-            </div>
-            <p>{error}</p>
-            <button type="submit">Log In</button>
-        </form>
+        <div className="page" style={{ maxWidth: '400px' }}>
+            <form onSubmit={handleSubmit}>
+                <h1>School Event Calendar</h1>
+                <div className="field">
+                    <label>Logon Name</label>
+                    <input
+                        type="text"
+                        value={logonName}
+                        onChange={(e) => setLogonName(e.target.value)}>
+                    </input>
+                </div>
+                <div className="field">
+                    <label>Password</label>
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}>
+                    </input>
+                </div>
+                {error && <p className="error">{error}</p>}
+                <button type="submit" className="btn btn-primary">Log In</button>
+            </form>
+        </div>
     );
 }
 

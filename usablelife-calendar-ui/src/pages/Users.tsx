@@ -4,6 +4,8 @@ import { useAuth } from '../context/AuthContext';
 import { apiFetch } from '../api/api';
 import { API_BASE_URL } from '../api/config';
 import { formatName } from '../utils/formatName';
+import { parseErrorMessage } from '../utils/parseErrorMessage';
+import Modal from '../components/Modal';
 
 interface UserRecord {
     userId: number;
@@ -76,7 +78,7 @@ function Users() {
             });
 
             if (!response.ok) {
-                const message = await response.text();
+                const message = await parseErrorMessage(response);
                 setError(message || 'Could not create the user.');
                 return;
             }
@@ -87,7 +89,7 @@ function Users() {
             });
 
             if (!response.ok) {
-                const message = await response.text();
+                const message = await parseErrorMessage(response);
                 setError(message || 'Could not update the user.');
                 return;
             }
@@ -111,10 +113,10 @@ function Users() {
     }
 
     return (
-        <div>
+        <div className="page">
             <h1>Users</h1>
-            {error && <p>{error}</p>}
-            <button type="button" onClick={startCreate}>Add User</button>
+            {error && <p className="error">{error}</p>}
+            <button type="button" className="btn btn-primary" onClick={startCreate}>Add User</button>
             <table>
                 <thead>
                     <tr>
@@ -131,8 +133,8 @@ function Users() {
                             <td>{u.logonName}</td>
                             <td>{u.isApprover ? 'Yes' : 'No'}</td>
                             <td>
-                                <button type="button" onClick={() => startEdit(u)}>Edit</button>
-                                <button type="button" onClick={() => handleDelete(u.userId)}>Delete</button>
+                                <button type="button" className="btn" onClick={() => startEdit(u)}>Edit</button>
+                                <button type="button" className="btn btn-danger" onClick={() => handleDelete(u.userId)}>Delete</button>
                             </td>
                         </tr>
                     ))}
@@ -140,39 +142,41 @@ function Users() {
             </table>
 
             {editingId !== null && (
-                <form onSubmit={handleSubmit}>
-                    <h2>{editingId === 0 ? 'Add User' : 'Edit User'}</h2>
-                    <div>
-                        <label>First Name</label>
-                        <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-                    </div>
-                    <div>
-                        <label>Middle Name</label>
-                        <input type="text" value={middleName} onChange={(e) => setMiddleName(e.target.value)} />
-                    </div>
-                    <div>
-                        <label>Last Name</label>
-                        <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-                    </div>
-                    <div>
-                        <label>Logon Name</label>
-                        <input type="text" value={logonName} onChange={(e) => setLogonName(e.target.value)} />
-                    </div>
-                    {editingId === 0 && (
-                        <div>
-                            <label>Password</label>
-                            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <Modal onClose={() => setEditingId(null)}>
+                    <form onSubmit={handleSubmit}>
+                        <h2>{editingId === 0 ? 'Add User' : 'Edit User'}</h2>
+                        <div className="field">
+                            <label>First Name</label>
+                            <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
                         </div>
-                    )}
-                    <div>
-                        <label>
-                            <input type="checkbox" checked={isApprover} onChange={(e) => setIsApprover(e.target.checked)} />
-                            Is Approver
-                        </label>
-                    </div>
-                    <button type="submit">Save</button>
-                    <button type="button" onClick={() => setEditingId(null)}>Cancel</button>
-                </form>
+                        <div className="field">
+                            <label>Middle Name</label>
+                            <input type="text" value={middleName} onChange={(e) => setMiddleName(e.target.value)} />
+                        </div>
+                        <div className="field">
+                            <label>Last Name</label>
+                            <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                        </div>
+                        <div className="field">
+                            <label>Logon Name</label>
+                            <input type="text" value={logonName} onChange={(e) => setLogonName(e.target.value)} />
+                        </div>
+                        {editingId === 0 && (
+                            <div className="field">
+                                <label>Password</label>
+                                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                            </div>
+                        )}
+                        <div className="field">
+                            <label>
+                                <input type="checkbox" checked={isApprover} onChange={(e) => setIsApprover(e.target.checked)} />
+                                {' '}Is Approver
+                            </label>
+                        </div>
+                        <button type="submit" className="btn btn-primary">Save</button>
+                        <button type="button" className="btn" onClick={() => setEditingId(null)}>Cancel</button>
+                    </form>
+                </Modal>
             )}
         </div>
     );

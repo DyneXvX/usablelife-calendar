@@ -42,16 +42,18 @@ function DayView({ year, month, day, onPreviousDay, onNextDay, onMonthView, onTo
     useEffect(() => { LoadDay(); }, [year, month, day]);
 
     return (
-        <div>
+        <div className="page">
             <h1>Day View</h1>
-            <h2>{date.toLocaleDateString('en-US')}</h2>
-            <button type="button" onClick={onPreviousDay}>Previous</button>
-            <button type="button" onClick={onToday}>Today</button>
-            <button type="button" onClick={onMonthView}>Month View</button>
-            <button type="button" onClick={onNextDay}>Next</button>
+            <div className="calendar-header">
+                <h2>{date.toLocaleDateString('en-US')}</h2>
+                <button type="button" className="btn" onClick={onPreviousDay}>Previous</button>
+                <button type="button" className="btn" onClick={onToday}>Today</button>
+                <button type="button" className="btn" onClick={onMonthView}>Month View</button>
+                <button type="button" className="btn" onClick={onNextDay}>Next</button>
+            </div>
 
             {events.map((e) => (
-                <div key={e.eventId} style={{ border: '1px solid #ccc', margin: '8px 0', padding: '8px' }}>
+                <div key={e.eventId} className="day-event">
                     <p>{formatTime(e.eventTime)} - {e.title}</p>
                     <p>Location: {e.location}</p>
                     <p>{e.description}</p>
@@ -59,7 +61,7 @@ function DayView({ year, month, day, onPreviousDay, onNextDay, onMonthView, onTo
                 </div>
             ))}
 
-            {error && <p>{error}</p>}
+            {error && <p className="error">{error}</p>}
         </div>
     );
 }

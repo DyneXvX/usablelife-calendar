@@ -5,6 +5,8 @@ import { apiFetch } from '../api/api';
 import { API_BASE_URL } from '../api/config';
 import { formatDate } from '../utils/formatDate';
 import { formatTime } from '../utils/formatTime';
+import { parseErrorMessage } from '../utils/parseErrorMessage';
+import Modal from '../components/Modal';
 
 interface EventRecord {
     eventId: number;
@@ -75,7 +77,7 @@ function ManageEvents() {
         });
 
         if (!response.ok) {
-            const message = await response.text();
+            const message = await parseErrorMessage(response);
             setError(message || 'Could not update the event.');
             return;
         }
@@ -98,9 +100,9 @@ function ManageEvents() {
     }
 
     return (
-        <div>
+        <div className="page">
             <h1>Manage Events</h1>
-            {error && <p>{error}</p>}
+            {error && <p className="error">{error}</p>}
             <table>
                 <thead>
                     <tr>
@@ -119,8 +121,8 @@ function ManageEvents() {
                             <td>{formatTime(ev.eventTime)}</td>
                             <td>{ev.location}</td>
                             <td>
-                                <button type="button" onClick={() => startEdit(ev)}>Edit</button>
-                                <button type="button" onClick={() => handleDelete(ev.eventId)}>Delete</button>
+                                <button type="button" className="btn" onClick={() => startEdit(ev)}>Edit</button>
+                                <button type="button" className="btn btn-danger" onClick={() => handleDelete(ev.eventId)}>Delete</button>
                             </td>
                         </tr>
                     ))}
@@ -128,31 +130,33 @@ function ManageEvents() {
             </table>
 
             {editingId !== null && (
-                <form onSubmit={handleSubmit}>
-                    <h2>Edit Event</h2>
-                    <div>
-                        <label>Title</label>
-                        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
-                    </div>
-                    <div>
-                        <label>Description</label>
-                        <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
-                    </div>
-                    <div>
-                        <label>Location</label>
-                        <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} />
-                    </div>
-                    <div>
-                        <label>Date</label>
-                        <input type="date" value={eventDate} onChange={(e) => setEventDate(e.target.value)} />
-                    </div>
-                    <div>
-                        <label>Time</label>
-                        <input type="time" value={eventTime} onChange={(e) => setEventTime(e.target.value)} />
-                    </div>
-                    <button type="submit">Save</button>
-                    <button type="button" onClick={() => setEditingId(null)}>Cancel</button>
-                </form>
+                <Modal onClose={() => setEditingId(null)}>
+                    <form onSubmit={handleSubmit}>
+                        <h2>Edit Event</h2>
+                        <div className="field">
+                            <label>Title</label>
+                            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+                        </div>
+                        <div className="field">
+                            <label>Description</label>
+                            <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+                        </div>
+                        <div className="field">
+                            <label>Location</label>
+                            <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} />
+                        </div>
+                        <div className="field">
+                            <label>Date</label>
+                            <input type="date" value={eventDate} onChange={(e) => setEventDate(e.target.value)} />
+                        </div>
+                        <div className="field">
+                            <label>Time</label>
+                            <input type="time" value={eventTime} onChange={(e) => setEventTime(e.target.value)} />
+                        </div>
+                        <button type="submit" className="btn btn-primary">Save</button>
+                        <button type="button" className="btn" onClick={() => setEditingId(null)}>Cancel</button>
+                    </form>
+                </Modal>
             )}
         </div>
     );

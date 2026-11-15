@@ -46,9 +46,9 @@ function PendingEvents() {
     }
 
     return (
-        <div>
+        <div className="page">
             <h1>Pending Events</h1>
-            {error && <p>{error}</p>}
+            {error && <p className="error">{error}</p>}
             <table>
                 <thead>
                     <tr>
@@ -67,8 +67,8 @@ function PendingEvents() {
                             <td>{formatTime(e.eventTime)}</td>
                             <td>{e.location}</td>
                             <td>
-                                <button type="button" onClick={() => handleApprove(e.eventId)}>Approve</button>
-                                <button type="button" onClick={() => handleDelete(e.eventId)}>Delete</button>
+                                <button type="button" className="btn btn-primary" onClick={() => handleApprove(e.eventId)}>Approve</button>
+                                <button type="button" className="btn btn-danger" onClick={() => handleDelete(e.eventId)}>Delete</button>
                             </td>
                         </tr>
                     ))}

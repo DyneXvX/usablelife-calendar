@@ -496,3 +496,5 @@ dist/
 *.db
 *.db-shm
 *.db-wal
+# Claude Code local dev-preview config used during CSS styling. 
+.claude/

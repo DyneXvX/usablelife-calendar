@@ -44,8 +44,8 @@ function MonthView({ year, month, onPreviousMonth, onNextMonth, onDayClick, onTo
     function getEventsForDay(day: number) {
         const matching: CalendarEvent[] = [];
         for (let i = 0; i < events.length; i++) {
-            const eventDay = new Date(events[i].eventDate).getDate();
-            if (eventDay === day) {
+            const eventDate = new Date(events[i].eventDate);
+            if (eventDate.getFullYear() === year && eventDate.getMonth() === month - 1 && eventDate.getDate() === day) {
                 matching.push(events[i]);
             }
         }
@@ -69,43 +69,51 @@ function MonthView({ year, month, onPreviousMonth, onNextMonth, onDayClick, onTo
     }
 
     return (
-        <div>
+        <div className="page">
             <h1>Month View</h1>
-            <h2>{monthName} {year}</h2>
-            <button type="button" onClick={onPreviousMonth}>Previous</button>
-            <button type="button" onClick={onToday}>Today</button>
-            <button type="button" onClick={onNextMonth}>Next</button>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px' }}>
+            <div className="calendar-header">
+                <h2>{monthName} {year}</h2>
+                <button type="button" className="btn" onClick={onPreviousMonth}>Previous</button>
+                <button type="button" className="btn" onClick={onToday}>Today</button>
+                <button type="button" className="btn" onClick={onNextMonth}>Next</button>
+            </div>
+            <div className="calendar-grid">
                 {weekdayNames.map((name) => (
-                    <div key={name} style={{ fontWeight: 'bold', textAlign: 'center' }}>
+                    <div key={name} className="calendar-weekday">
                         {name}
                     </div>
                 ))}
-                {calendarCells.map((day, index) => (
-                    <div
-                        key={index}
-                        onClick={() => day && onDayClick(day)}
-                        style={{
-                            border: '1px solid #ccc',
-                            minHeight: '80px',
-                            padding: '4px',
-                            cursor: day ? 'pointer' : 'default'
-                        }}
-                    >
-                        {day && (
-                            <>
-                                <strong>{day}</strong>
-                                {getEventsForDay(day).map((e) => (
-                                    <div key={e.eventId}>
-                                        {formatTime(e.eventTime)} - {e.title} - {e.location}
-                                    </div>
-                                ))}
-                            </>
-                        )}
-                    </div>
-                ))}
+                {calendarCells.map((day, index) => {
+                    const dayEvents = day ? getEventsForDay(day) : [];
+                    const visibleEvents = dayEvents.slice(0, 3);
+                    const hiddenCount = dayEvents.length - visibleEvents.length;
+
+                    return (
+                        <div
+                            key={index}
+                            onClick={() => day && onDayClick(day)}
+                            className={`calendar-cell ${day ? 'clickable' : ''}`}
+                        >
+                            {day && (
+                                <>
+                                    <span className="calendar-day-number">{day}</span>
+                                    {visibleEvents.map((e) => (
+                                        <div key={e.eventId} className="calendar-event">
+                                            {formatTime(e.eventTime)} - {e.title} - {e.location}
+                                        </div>
+                                    ))}
+                                    {hiddenCount > 0 && (
+                                        <div className="calendar-event calendar-event-more">
+                                            +{hiddenCount} more
+                                        </div>
+                                    )}
+                                </>
+                            )}
+                        </div>
+                    );
+                })}
             </div>
-            {error && <p>{error}</p>}
+            {error && <p className="error">{error}</p>}
         </div>
     );
 }
